@@ -33,14 +33,13 @@ byte_range = [("4", "128M")]
 op = ["sum", "prod", "min", "max"]
 step_factor = ["2"]
 datatype = ["int8", "uint8", "int32", "uint32", "int64", "uint64", "half", "float", "double"]
-memory_type = ["coarse","fine", "host"]
 
 path = os.path.dirname(os.path.abspath(__file__))
 executable = path + "/../build/reduce_scatter_perf"
 
-@pytest.mark.parametrize("nthreads, ngpus_single, byte_range, op, step_factor, datatype, memory_type",
-    itertools.product(nthreads, ngpus_single, byte_range, op, step_factor, datatype, memory_type))
-def test_ReduceScatterSingleProcess(nthreads, ngpus_single, byte_range, op, step_factor, datatype, memory_type):
+@pytest.mark.parametrize("nthreads, ngpus_single, byte_range, op, step_factor, datatype",
+    itertools.product(nthreads, ngpus_single, byte_range, op, step_factor, datatype))
+def test_ReduceScatterSingleProcess(nthreads, ngpus_single, byte_range, op, step_factor, datatype):
     try:
         args = [executable,
                 "-t", nthreads,
@@ -49,10 +48,7 @@ def test_ReduceScatterSingleProcess(nthreads, ngpus_single, byte_range, op, step
                 "-e", byte_range[1],
                 "-o", op,
                 "-f", step_factor,
-                "-d", datatype,
-                "-y", memory_type]
-        if memory_type == "fine":
-            args.insert(0, "HSA_FORCE_FINE_GRAIN_PCIE=1")
+                "-d", datatype]
         args_str = " ".join(args)
         rccl_test = subprocess.run(args_str, stdout=subprocess.PIPE, universal_newlines=True, shell=True)
     except subprocess.CalledProcessError as err:
@@ -88,10 +84,7 @@ def test_ReduceScatterMPI(request, nthreads, nprocs, ngpus_mpi, byte_range, op, 
                     "-e", byte_range[1],
                     "-o", op,
                     "-f", step_factor,
-                    "-d", datatype,
-                    "-y", memory_type]
-        if memory_type == "fine":
-            args.insert(0, "HSA_FORCE_FINE_GRAIN_PCIE=1")
+                    "-d", datatype]
         args_str = " ".join(args)
         print(args_str)
         rccl_test = subprocess.run(args_str, universal_newlines=True, shell=True)

@@ -63,6 +63,7 @@ All tests support the same set of arguments :
   * `-p,--parallel_init <0/1>` use threads to initialize RCCL in parallel. Default : 0.
   * `-c,--check <0/1>` check correctness of results. This can be quite slow on large numbers of GPUs. Default : 1.
   * `-z,--blocking <0/1>` Make RCCL collective blocking, i.e. have CPUs wait and sync after each collective. Default : 0.
+  * `-y,--memory_type <coarse/fine/host>` Specify the kind of memory to be used in RCCL. Default : coarse.
 
 ## Unit tests
 
@@ -80,7 +81,7 @@ $ LD_LIBRARY_PATH=/path/to/rccl-install/lib/ HSA_FORCE_FINE_GRAIN_PCIE=1 python3
 
 RCCL tests are provided under the BSD license.
 
-All source code and accompanying documentation is copyright (c) 2016-2019, NVIDIA CORPORATION. All rights reserved.
+All source code and accompanying documentation is copyright (c) 2016-2020, NVIDIA CORPORATION. All rights reserved.
 
-All modifications are copyright (c) 2019 Advanced Micro Devices, Inc. All rights reserved.
+All modifications are copyright (c) 2020 Advanced Micro Devices, Inc. All rights reserved.
 
